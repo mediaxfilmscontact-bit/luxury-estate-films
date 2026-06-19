@@ -1,0 +1,10 @@
+# Respaldos de alta resolución (no van a producción — guárdalos aparte)
+_masters-originales/
+
+# Archivos sueltos / temporales
+*.zip
+.DS_Store
+**/.DS_Store
+
+# Configuración local del preview de Claude Code
+.claude/
