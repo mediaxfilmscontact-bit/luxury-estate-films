@@ -40,7 +40,7 @@ button { background: none; border: none; cursor: pointer; }
 /* ---------- Base ---------- */
 html {
   scroll-behavior: smooth;
-  font-size: 19px;
+  font-size: 20px;
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -74,16 +74,21 @@ body {
 
 .section-title {
   font-family: var(--font-h);
-  font-weight: 500;
-  font-size: clamp(2rem, 3.6vw, 3.125rem);
-  line-height: 1.14;
+  font-weight: 400;
+  /* El mínimo es bajo a propósito: con .nowrap-desktop los títulos largos
+     deben poder encogerse entre 769px y 1024px sin cortarse. */
+  font-size: clamp(1.4rem, 3.2vw, 2.75rem);
+  line-height: 1.16;
   color: var(--text);
   letter-spacing: -0.02em;
 }
 .section-title em {
   font-style: normal;
-  color: var(--accent);
+  color: inherit;
 }
+
+/* Una sola línea en escritorio; en móvil se libera para que pueda partirse */
+.nowrap-desktop { white-space: nowrap; }
 
 .section-header { text-align: center; margin-bottom: 76px; }
 
@@ -254,9 +259,10 @@ body {
 .hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url('../img/hero/terraza.jpg');
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   opacity: 0.25;
 }
 .hero__overlay {
@@ -289,17 +295,16 @@ body {
 }
 .hero__title {
   font-family: var(--font-h);
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 500;
-  line-height: 1.08;
+  font-size: clamp(1.6rem, 3.9vw, 3.05rem);
+  font-weight: 400;
+  line-height: 1.1;
   color: #F8F8F8;
   letter-spacing: -0.025em;
   margin-bottom: 30px;
-  text-wrap: balance;
 }
 .hero__title em {
   font-style: normal;
-  color: rgba(245, 242, 234, 0.62);
+  color: inherit;
 }
 .hero__actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 .hero__scroll {
@@ -360,7 +365,9 @@ body {
 .filosofia__title { margin-bottom: 28px; }
 .filosofia__texto {
   font-family: var(--font-b);
-  font-size: clamp(1rem, 1.5vw, 1.1875rem);
+  /* Frase larga en una sola línea: el mínimo permite que encoja hasta
+     el corte móvil (768px), donde recupera 1rem y puede partirse. */
+  font-size: clamp(0.7rem, 1.62vw, 1.0625rem);
   font-weight: 300;
   color: var(--text-2);
   line-height: 1.85;
@@ -476,14 +483,16 @@ body {
   scrollbar-width: none;
 }
 .foto-carrusel__track::-webkit-scrollbar { display: none; }
+/* Altura compartida + aspect-ratio por pieza = sin recortes (mezcla 3:2 y 3:4) */
 .foto-carrusel__item {
   flex: 0 0 auto;
   scroll-snap-align: start;
   height: clamp(260px, 30vw, 400px);
-  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: #111;
 }
+.foto-carrusel__item--3-4 { aspect-ratio: 3 / 4; }
+.foto-carrusel__item--3-2 { aspect-ratio: 3 / 2; }
 .foto-carrusel__item img {
   width: 100%;
   height: 100%;
@@ -583,7 +592,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 72px;
+  gap: 52px;
   margin-top: 48px;
   flex-wrap: wrap;
 }
@@ -597,7 +606,8 @@ body {
 }
 .cliente-logo:hover { opacity: 1; filter: grayscale(0); }
 .cliente-logo img {
-  max-height: 72px;
+  max-height: 110px;
+  max-width: 190px;   /* evita que el logo horizontal domine sobre los cuadrados */
   width: auto;
   object-fit: contain;
 }
@@ -638,6 +648,7 @@ body {
 }
 .portafolio__item--9-16 { aspect-ratio: 9 / 16; }
 .portafolio__item--3-4  { aspect-ratio: 3 / 4; }
+.portafolio__item--3-2  { aspect-ratio: 3 / 2; }
 .portafolio__item--16-9 { aspect-ratio: 16 / 9; }
 
 .portafolio__media {
@@ -856,6 +867,11 @@ body {
   .hero__content { text-align: center; }
   .hero__actions { justify-content: center; }
   .hero::before { display: none; }
+
+  /* En móvil los títulos largos sí pueden partirse en varias líneas */
+  .nowrap-desktop { white-space: normal; }
+  .hero__title { font-size: 2rem; }
+  .filosofia__texto { font-size: 1rem; }
 
   /* Carrusel de portafolio: piezas más bajas para que quepan en pantalla */
   .portafolio__item { height: clamp(300px, 46vh, 420px); }

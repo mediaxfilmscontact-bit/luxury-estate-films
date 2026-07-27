@@ -36,15 +36,21 @@ Producción audiovisual (foto, video, drone) para bienes raíces en México.
 > El teal `#234F60` es oscuro: sobre fondos oscuros se usa `--accent-on-dark` (`#8DB0BC`) o crema para que sea legible.
 
 ## Tipografías
-- **Títulos:** Helvetica Neue Medium (`var(--font-h)`, weight 500) — fuente de sistema, no requiere Google Fonts. En Windows cae a Arial.
+- **Títulos:** Helvetica Neue (`var(--font-h)`, **weight 400**) — fuente de sistema, no requiere Google Fonts. En Windows cae a Arial.
 - **Cuerpo / UI:** DM Sans (`var(--font-b)`, Google Fonts).
 - Sin uppercase ni cursivas en toda la página (decisión de diseño).
-- Base: `html { font-size: 19px }` — todos los tamaños son rem, escala proporcional.
+- **Títulos de un solo color.** `.section-title em` y `.hero__title em` usan `color: inherit`. El teal se reserva para etiquetas de sección, números de paso y precios.
+- Base: `html { font-size: 20px }` — todos los tamaños son rem, escala proporcional.
 - Las carpetas `fonts/code` y `fonts/a_pompadour` están sin uso (descartadas).
 
+### Títulos en una sola línea
+Los títulos largos llevan la clase **`.nowrap-desktop`** (`white-space: nowrap`), que se libera en ≤768px para que puedan partirse en móvil.
+
+> **Cuidado al tocar sus `clamp()`:** entre 769px y 1024px el `nowrap` sigue activo pero el contenedor ya es angosto. Los mínimos de `.section-title` (`1.4rem`) y `.filosofia__texto` (`0.7rem`) están calculados para que el texto más largo no se corte en esa franja. Si subes esos mínimos, verifica midiendo el ancho real del texto contra el del `.container` a 780px y 860px.
+
 ## Secciones (orden en index.html)
-1. **Hero** — pantalla completa, `img/hero/terraza.jpg` al 25% opacidad. Título "Producción Audiovisual para Bienes Raíces." (máx 2 líneas), eyebrow debajo, un solo CTA a WhatsApp.
-2. **Portafolio** — carrusel horizontal **full-bleed**. Altura compartida + `aspect-ratio` por pieza = anchos naturales, cero recortes. Escalable: agregar o quitar piezas no rompe el layout.
+1. **Hero** — pantalla completa, **video de fondo** `video/hero-drone.mp4` al 25% opacidad (con `terraza.jpg` de `poster`). Título en una línea, eyebrow debajo, un solo CTA a WhatsApp.
+2. **Portafolio** — carrusel horizontal **full-bleed** de 12 piezas en el orden **video → 3 fotos**, repetido 3 veces. Altura compartida + `aspect-ratio` por pieza = anchos naturales, cero recortes. Escalable: agregar o quitar piezas no rompe el layout.
 3. **Filosofía** — bloque corto: título + 2 líneas. Nada más.
 4. **Clientes** — label "Han confiado en nosotros" + 4 logos.
 5. **Servicios** — 3 bloques grandes alternados (visual a un lado, texto al otro). Video es el bloque destacado con fondo teal.
@@ -63,23 +69,26 @@ Producción audiovisual (foto, video, drone) para bienes raíces en México.
 | Drone       | $1,500 MXN   | Add-on, no servicio suelto    |
 
 ## Estructura de assets
+Todos los assets son los definitivos. **~36 MB por visita** (30 MB de video + 6 MB de imágenes); cada archivo se carga una sola vez.
+
 ```
+video/                      ← todos 720×1280 vertical, ~15 s, sin audio
+  hero-drone.mp4            ← 1.2 MB · 1280×720 horizontal, fondo del hero
+  portfolio-1/2/3.mp4       ← 5.3–5.5 MB c/u, carrusel portafolio
+  servicio-video.mp4        ← 5.7 MB, bloque Video
+  servicio-drone.mp4        ← 6.3 MB, bloque Drone
 img/
-  hero/terraza.jpg          ← fondo hero, opacity 25%
-  portfolio/                ← 5 fotos (bano-inferior, comedor, exterior, planta-baja, regadera)
-  clientes/                 ← cliente-1.png … cliente-4.png
-  logos-tops/               ← sin uso (se quitaron de filosofía)
-  servicios/                ← sin uso (el layout nuevo usa carrusel + video)
-video/
-  portfolio-1.mp4           ← 9:16, carrusel portafolio (52 MB)
-  portfolio-2.mp4           ← 9:16, carrusel portafolio (28 MB)
-  web-middle.mp4            ← sin uso (se quitó el bloque de cierre de filosofía)
+  hero/terraza.jpg          ← poster del video del hero
+  portfolio/                ← 9 fotos: pt-1, pt-1-2, pt-1-3, pt-2, … pt-3-3
+  fotografia/               ← 6 fotos (foto-1 … foto-6), carrusel del bloque Fotografía
+  clientes/                 ← cliente-1.png … cliente-5.png
 ```
+
 Todos los videos: `autoplay muted loop playsinline`.
 
-> **Pendiente:** los bloques de Servicios usan assets del portafolio como **placeholders** (marcados con `<!-- PLACEHOLDER -->` en el HTML). Hay que sustituirlos por el carrusel de fotos, el video de servicios y el video de drone definitivos.
+**Proporciones mezcladas.** Ni el portafolio ni el carrusel de fotografía asumen una proporción única: cada pieza lleva su clase (`--9-16`, `--3-4`, `--3-2`, `--16-9`) y comparte altura con las demás, de modo que el ancho sale natural y **nada se recorta**. Al agregar una foto hay que darle la clase que le corresponda.
 
-> **Ojo con el peso:** `portfolio-1.mp4` y `portfolio-2.mp4` se cargan dos veces cada uno (portafolio + placeholder de servicios) = ~160 MB por visita. Al sustituir los placeholders por assets propios y comprimidos esto se resuelve.
+> **`cliente-5.png` (Fonseca)** venía con el texto en blanco, invisible sobre el fondo claro. Se convirtió a negro conservando el verde de la casita — un `invert` completo habría vuelto el verde azul. El original está en `_masters-originales/ronda2/`.
 
 ## Compresión de assets
 Herramientas nativas macOS (sin ffmpeg):
