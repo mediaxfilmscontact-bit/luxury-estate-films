@@ -39,18 +39,32 @@ Producción audiovisual (foto, video, drone) para bienes raíces en México.
 - **Títulos:** Helvetica Neue (`var(--font-h)`, **weight 400**) — fuente de sistema, no requiere Google Fonts. En Windows cae a Arial.
 - **Cuerpo / UI:** DM Sans (`var(--font-b)`, Google Fonts).
 - Sin uppercase ni cursivas en toda la página (decisión de diseño).
-- **Títulos de un solo color.** `.section-title em` y `.hero__title em` usan `color: inherit`. El teal se reserva para etiquetas de sección, números de paso y precios.
+- **Títulos de un solo color.** `.section-title em` y `.hero__title em` usan `color: inherit`.
+- **`.section-title` va en teal** (`var(--accent)`), de la sección 2 en adelante. El `.hero__title` es la excepción: mantiene `#F8F8F8` porque el teal oscuro sería ilegible sobre el video de fondo. No agregues overrides de color por sección — se quitaron a propósito de `.portafolio`, `.proceso` y `.contacto__title`.
 - Base: `html { font-size: 20px }` — todos los tamaños son rem, escala proporcional.
 - Las carpetas `fonts/code` y `fonts/a_pompadour` están sin uso (descartadas).
 
 ### Títulos en una sola línea
 Los títulos largos llevan la clase **`.nowrap-desktop`** (`white-space: nowrap`), que se libera en ≤768px para que puedan partirse en móvil.
 
-> **Cuidado al tocar sus `clamp()`:** entre 769px y 1024px el `nowrap` sigue activo pero el contenedor ya es angosto. Los mínimos de `.section-title` (`1.4rem`) y `.filosofia__texto` (`0.7rem`) están calculados para que el texto más largo no se corte en esa franja. Si subes esos mínimos, verifica midiendo el ancho real del texto contra el del `.container` a 780px y 860px.
+**Si un título se ve corrido hacia la derecha, no es un problema de `text-align`.** Está centrado, pero desborda su contenedor; como `body` tiene `overflow-x: hidden`, el lado izquierdo se recorta y parece descentrado. La solución siempre es hacer que el texto **quepa**.
+
+> **Al tocar cualquier `clamp()` de un título, mide contra el contenedor CORRECTO.** Cada texto vive en un contenedor distinto, no todos en `.container` (1180px):
+>
+> | Texto | Contenedor | Ancho útil |
+> |---|---|---|
+> | `.hero__title` | `.hero__content` | **876px** (1020 − padding 5%) |
+> | `.filosofia__texto` | `.filosofia__inner` | **860px** |
+> | `.contacto__title` | `.contacto__inner` | 1180px |
+> | `.section-title` (resto) | `.container` | 1180px |
+>
+> Verificación: comparar `Range.getBoundingClientRect().width` del texto contra el **`clientWidth` del elemento mismo** (no del padre — `clientWidth` incluye el padding y engaña). Barrer 780, 860, 1024 y 1440px.
+>
+> Los máximos actuales (`.hero__title` 2.3rem, `.filosofia__texto` 0.88rem) están topados por esta razón; subirlos vuelve a romper el centrado.
 
 ## Secciones (orden en index.html)
-1. **Hero** — pantalla completa, **video de fondo** `video/hero-drone.mp4` al 25% opacidad (con `terraza.jpg` de `poster`). Título en una línea, eyebrow debajo, un solo CTA a WhatsApp.
-2. **Portafolio** — carrusel horizontal **full-bleed** de 12 piezas en el orden **video → 3 fotos**, repetido 3 veces. Altura compartida + `aspect-ratio` por pieza = anchos naturales, cero recortes. Escalable: agregar o quitar piezas no rompe el layout.
+1. **Hero** — pantalla completa, **video de fondo** `video/hero-fondo.mp4` al 25% opacidad (con `terraza.jpg` de `poster`). Título en una línea, eyebrow debajo, un solo CTA a WhatsApp.
+2. **Portafolio** — carrusel horizontal **full-bleed** de 11 piezas, **sin textos ni captions encima**. Altura compartida + `aspect-ratio` por pieza = anchos naturales, cero recortes. Escalable: agregar o quitar piezas no rompe el layout.
 3. **Filosofía** — bloque corto: título + 2 líneas. Nada más.
 4. **Clientes** — label "Han confiado en nosotros" + 4 logos.
 5. **Servicios** — 3 bloques grandes alternados (visual a un lado, texto al otro). Video es el bloque destacado con fondo teal.
@@ -72,17 +86,19 @@ Los títulos largos llevan la clase **`.nowrap-desktop`** (`white-space: nowrap`
 Todos los assets son los definitivos. **~36 MB por visita** (30 MB de video + 6 MB de imágenes); cada archivo se carga una sola vez.
 
 ```
-video/                      ← todos 720×1280 vertical, ~15 s, sin audio
-  hero-drone.mp4            ← 1.2 MB · 1280×720 horizontal, fondo del hero
-  portfolio-1/2/3.mp4       ← 5.3–5.5 MB c/u, carrusel portafolio
-  servicio-video.mp4        ← 5.7 MB, bloque Video
-  servicio-drone.mp4        ← 6.3 MB, bloque Drone
+video/
+  hero-fondo.mp4            ← 1.7 MB · 1920×1080 horizontal, fondo del hero
+  servicio-video.mp4        ← 5.7 MB · 720×1280, bloque Video
+  servicio-drone.mp4        ← 6.3 MB · 720×1280, bloque Drone
 img/
   hero/terraza.jpg          ← poster del video del hero
-  portfolio/                ← 9 fotos: pt-1, pt-1-2, pt-1-3, pt-2, … pt-3-3
-  fotografia/               ← 6 fotos (foto-1 … foto-6), carrusel del bloque Fotografía
+  portfolio/                ← 11 piezas numeradas 0…10, FOTOS Y VIDEOS MEZCLADOS
+                              (1.mp4, 6.mp4 y 10.mp4 viven aquí, no en video/)
+  fotografia/               ← 6 fotos (1.jpg … 6.jpg), carrusel del bloque Fotografía
   clientes/                 ← cliente-1.png … cliente-5.png
 ```
+
+> **El orden de portafolio y fotografía es el orden numérico de los archivos.** Al reordenar, se renombran los archivos y el HTML sigue esa numeración. Los 3 videos del portafolio viven dentro de `img/portfolio/` (junto a las fotos) para mantener la secuencia en un solo lugar.
 
 Todos los videos: `autoplay muted loop playsinline`.
 
