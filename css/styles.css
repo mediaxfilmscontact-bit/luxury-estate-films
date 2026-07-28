@@ -325,16 +325,16 @@ body {
 }
 .hero__scroll span {
   font-family: var(--font-b);
-  font-size: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: none;
-  color: rgba(248, 248, 248, 0.35);
+  color: rgba(248, 248, 248, 0.55);
 }
 .hero__scroll-line {
-  width: 1px;
-  height: 48px;
-  background: rgba(248, 248, 248, 0.16);
+  width: 2px;
+  height: 80px;
+  background: rgba(248, 248, 248, 0.25);
   position: relative;
   overflow: hidden;
 }
@@ -597,7 +597,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 52px;
+  /* gap 32px: con 6 logos de 168px la fila mide 1168px y cabe en los
+     1180px del contenedor. Si se agrega un séptimo, hay que bajar el
+     ancho de .cliente-logo img o dejar que se vaya a dos filas. */
+  gap: 32px;
   margin-top: 48px;
   flex-wrap: wrap;
 }
@@ -610,13 +613,13 @@ body {
   justify-content: center;
 }
 .cliente-logo:hover { opacity: 1; filter: grayscale(0); }
-/* Los PNG vienen recortados a su bounding box, así que estos límites
-   aplican al arte real y no a márgenes vacíos. Se topan las dos
-   dimensiones para que un logo muy ancho no domine sobre los altos. */
+/* Los PNG vienen normalizados: todos en un lienzo de 370×185 y con el
+   arte escalado a la misma área óptica (~26.000 px²). Por eso basta una
+   caja fija idéntica para los seis — no hace falta topar cada uno aparte.
+   Al agregar un logo nuevo hay que pasarlo por el mismo proceso. */
 .cliente-logo img {
-  max-height: 100px;
-  max-width: 200px;
-  width: auto;
+  width: 168px;
+  height: 84px;
   object-fit: contain;
 }
 
@@ -858,6 +861,11 @@ body {
   .portafolio__item { height: clamp(300px, 46vh, 420px); }
   .portafolio__hint { text-align: center; }
 
+  /* Logos más chicos en móvil, conservando la proporción entre ellos:
+     se encoge la caja, no cada logo por separado */
+  .clientes__logos { gap: 28px; }
+  .cliente-logo img { width: 118px; height: 59px; }
+
   .footer__grid { grid-template-columns: 1fr; gap: 36px; }
   .contacto__actions .btn--lg { width: 100%; }
 }
@@ -865,7 +873,8 @@ body {
 @media (max-width: 480px) {
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { text-align: center; }
-  .clientes__logos { gap: 28px; }
+  .clientes__logos { gap: 22px; }
+  .cliente-logo img { width: 104px; height: 52px; }
   .servicio-bloque--featured { padding-left: 22px; padding-right: 22px; }
   .foto-carrusel__item { height: 260px; }
 }

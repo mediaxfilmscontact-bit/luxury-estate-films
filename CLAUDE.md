@@ -106,6 +106,17 @@ Todos los videos: `autoplay muted loop playsinline`.
 
 > **`cliente-5.png` (Fonseca)** venía con el texto en blanco, invisible sobre el fondo claro. Se convirtió a negro conservando el verde de la casita — un `invert` completo habría vuelto el verde azul. El original está en `_masters-originales/ronda2/`.
 
+### Logos de clientes: cómo agregar uno nuevo
+Los PNG de marca vienen con proporciones y márgenes muy distintos (uno tenía el arte en el 13% de su alto), así que topar `max-height` en CSS los deja de tamaños dispares. **Los seis están normalizados en disco**, no por CSS:
+
+1. Recortar al bounding box del arte (ignorando transparente y casi-blanco).
+2. Escalar conservando proporción hasta que el área sea **~26.000 px²** — la misma para todos.
+3. Centrar sobre un lienzo transparente uniforme de **370×185**.
+
+Así el CSS es una sola caja fija (`.cliente-logo img { width: 168px; height: 84px; object-fit: contain }`) y los seis pesan lo mismo ópticamente. Un logo nuevo **debe pasar por el mismo proceso**; si se mete crudo se verá desproporcionado.
+
+> Con 6 logos de 168px y `gap: 32px` la fila mide 1168px y cabe justo en el contenedor de 1180px. Al agregar un séptimo hay que bajar el ancho o dejar que caiga a dos filas. Los originales están en `_masters-originales/ronda4/`.
+
 ## Compresión de assets
 Herramientas nativas macOS (sin ffmpeg):
 - Imágenes: `sips -Z <px_max> --setProperty format jpeg archivo.jpg`
