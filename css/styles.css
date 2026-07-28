@@ -263,16 +263,20 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.25;
+  opacity: 1;
 }
 .hero__overlay {
   position: absolute;
   inset: 0;
+  /* Viñeta arriba y abajo para el nav y el indicador de scroll; el centro
+     se deja casi limpio para que el video se vea. El clip ya es oscuro
+     de origen (brillo medio 17/255), así que el contraste del título
+     sigue por encima de 10:1. */
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.35) 50%,
-    rgba(0, 0, 0, 0.55) 100%
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.45) 100%
   );
 }
 .hero__content {
@@ -606,9 +610,12 @@ body {
   justify-content: center;
 }
 .cliente-logo:hover { opacity: 1; filter: grayscale(0); }
+/* Los PNG vienen recortados a su bounding box, así que estos límites
+   aplican al arte real y no a márgenes vacíos. Se topan las dos
+   dimensiones para que un logo muy ancho no domine sobre los altos. */
 .cliente-logo img {
-  max-height: 110px;
-  max-width: 190px;   /* evita que el logo horizontal domine sobre los cuadrados */
+  max-height: 100px;
+  max-width: 200px;
   width: auto;
   object-fit: contain;
 }
@@ -691,8 +698,9 @@ body {
   color: var(--text-2);
   line-height: 1.9;
   /* Ancho propio: el contenedor se ensanchó para el título, pero el
-     párrafo se leería mal en una línea de 1180px */
-  max-width: 640px;
+     párrafo se leería mal en una línea de 1180px. 720px es lo que
+     necesita la frase completa con .nowrap-desktop */
+  max-width: 720px;
   margin: 30px auto 54px;
   opacity: 0.8;
 }
