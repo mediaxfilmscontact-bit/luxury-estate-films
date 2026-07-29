@@ -1,6 +1,7 @@
 /* ================================================
    MISRAIM OROZCO — styles.css
-   Tipografía: Helvetica Neue Medium (títulos) + DM Sans (cuerpo)
+   Tipografía: Instrument Sans (títulos, botones, precios)
+             + Source Sans 3 (cuerpo, nav, labels, footer)
    Acento de marca: #234F60 (teal)
    ================================================ */
 
@@ -26,8 +27,8 @@ button { background: none; border: none; cursor: pointer; }
   --border:        rgba(30, 30, 30, 0.11);
   --border-light:  rgba(255, 255, 255, 0.12);
 
-  --font-h: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-b: 'DM Sans', system-ui, sans-serif;
+  --font-h: 'Instrument Sans', system-ui, sans-serif;   /* títulos, botones, precios */
+  --font-b: 'Source Sans 3', system-ui, sans-serif;     /* cuerpo, nav, labels, footer */
 
   --max-w:   1180px;
   --pad-sec: clamp(96px, 11vw, 140px);
@@ -69,7 +70,7 @@ body {
   text-transform: none;
   color: var(--accent);
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 26px;
 }
 
 .section-title {
@@ -90,7 +91,7 @@ body {
 /* Una sola línea en escritorio; en móvil se libera para que pueda partirse */
 .nowrap-desktop { white-space: nowrap; }
 
-.section-header { text-align: center; margin-bottom: 76px; }
+.section-header { text-align: center; margin-bottom: 88px; }
 
 
 /* ---------- Botones ---------- */
@@ -99,17 +100,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--font-b);
+  font-family: var(--font-h);   /* los botones van en la fuente de títulos */
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: none;
-  padding: 15px 34px;
+  /* line-height 1: el body hereda 1.6 y desbalanceaba el padding óptico */
+  line-height: 1;
+  padding: 17px 38px;
   border-radius: 1px;
-  transition: background 0.25s var(--ease), color 0.25s, border-color 0.25s,
-              transform 0.25s var(--ease), box-shadow 0.25s;
+  transition: background 0.2s var(--ease), color 0.2s, border-color 0.2s,
+              transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
   white-space: nowrap;
   border: 1px solid transparent;
+}
+/* Microinteracción común: elevación de 1px y sombra casi imperceptible */
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
 }
 .btn--accent {
   background: var(--accent);
@@ -119,17 +127,6 @@ body {
 .btn--accent:hover {
   background: var(--accent-dark);
   border-color: var(--accent-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(35, 79, 96, 0.22);
-}
-.btn--ghost {
-  background: transparent;
-  color: rgba(248, 248, 248, 0.85);
-  border-color: rgba(248, 248, 248, 0.32);
-}
-.btn--ghost:hover {
-  border-color: rgba(248, 248, 248, 0.75);
-  color: #F8F8F8;
 }
 .btn--outline {
   background: transparent;
@@ -162,7 +159,7 @@ body {
   padding: 8px 0;
 }
 .btn--text-link:hover { opacity: 1; color: var(--accent); }
-.btn--lg { padding: 19px 46px; font-size: 0.9375rem; }
+.btn--lg { padding: 21px 50px; font-size: 0.9375rem; }
 
 /* ==============================================
    NAV
@@ -172,13 +169,13 @@ body {
   inset: 0 0 auto 0;
   z-index: 1000;
   height: var(--nav-h);
-  transition: background 0.45s var(--ease), box-shadow 0.45s var(--ease);
+  transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 .nav--scrolled {
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .nav__inner {
   display: flex;
@@ -238,7 +235,7 @@ body {
   width: 24px;
   height: 1px;
   background: #F8F8F8;
-  transition: transform 0.32s var(--ease), opacity 0.2s;
+  transition: transform 0.3s var(--ease), opacity 0.2s;
 }
 .nav--open .nav__hamburger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav--open .nav__hamburger span:nth-child(2) { opacity: 0; }
@@ -250,7 +247,7 @@ body {
 .hero {
   position: relative;
   height: 100svh;
-  min-height: 660px;
+  min-height: 720px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -275,7 +272,7 @@ body {
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.45) 0%,
-    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.20) 50%,
     rgba(0, 0, 0, 0.45) 100%
   );
 }
@@ -294,18 +291,24 @@ body {
   font-weight: 400;
   letter-spacing: 0.14em;
   color: var(--accent-on-dark);
-  margin: 4px 0 50px;
+  margin: 4px 0 62px;
   display: block;
 }
 .hero__title {
   font-family: var(--font-h);
   /* El máximo está topado para que quepa en .hero__content (1020px − padding 5% = 876px) */
   font-size: clamp(1.6rem, 3.9vw, 2.3rem);
-  font-weight: 400;
+  /* Peso 500 en vez de 400 para dar presencia sin tocar el tamaño.
+     El tracking baja de -0.025em a -0.03em: los pesos altos piden algo
+     más de cierre, y compensa el ancho extra.
+     OJO: .hero__content es un flex item que se ajusta a su contenido,
+     así que el límite real del título es su max-width menos el padding
+     = 876px, no un ancho fijo. Medir contra eso. */
+  font-weight: 500;
   line-height: 1.1;
   color: #F8F8F8;
-  letter-spacing: -0.025em;
-  margin-bottom: 30px;
+  letter-spacing: -0.03em;
+  margin-bottom: 38px;
 }
 .hero__title em {
   font-style: normal;
@@ -404,11 +407,11 @@ body {
 .step__number {
   display: block;
   font-family: var(--font-h);
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 500;
   color: var(--accent);
   line-height: 1;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   letter-spacing: -0.02em;
 }
 .step__title {
@@ -416,14 +419,14 @@ body {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--text);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .step__desc {
   font-family: var(--font-b);
   font-size: 0.9375rem;
   font-weight: 300;
   color: var(--text-2);
-  line-height: 1.8;
+  line-height: 1.7;
   opacity: 0.78;
 }
 
@@ -505,7 +508,7 @@ body {
   display: block;
   transition: transform 0.6s var(--ease);
 }
-.foto-carrusel__item:hover img { transform: scale(1.04); }
+.foto-carrusel__item:hover img { transform: scale(1.02); }
 
 /* Texto del bloque */
 .servicio-bloque__num {
@@ -606,7 +609,7 @@ body {
 }
 .cliente-logo {
   opacity: 0.55;
-  transition: opacity 0.25s, filter 0.25s;
+  transition: opacity 0.3s var(--ease), filter 0.3s var(--ease);
   filter: grayscale(1);
   display: flex;
   align-items: center;
@@ -668,7 +671,7 @@ body {
   display: block;
   transition: transform 0.6s var(--ease);
 }
-.portafolio__item:hover .portafolio__media { transform: scale(1.04); }
+.portafolio__item:hover .portafolio__media { transform: scale(1.02); }
 .portafolio__hint {
   font-family: var(--font-b);
   font-size: 0.8125rem;
@@ -786,10 +789,10 @@ body {
   justify-content: center;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.42);
   z-index: 990;
-  transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 .whatsapp-fab:hover {
-  transform: scale(1.1);
+  transform: scale(1.04);
   box-shadow: 0 8px 32px rgba(37, 211, 102, 0.55);
 }
 
@@ -798,8 +801,8 @@ body {
    ============================================== */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+  transform: translateY(16px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
 [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
 [data-reveal-delay="1"] { transition-delay: 0.1s; }
@@ -840,7 +843,7 @@ body {
     align-items: flex-start;
   }
   .nav--open .nav__links a {
-    font-family: var(--font-h);
+    font-family: var(--font-b);   /* navegación en la fuente de cuerpo, igual que en escritorio */
     font-size: 1.875rem;
     font-weight: 500;
     letter-spacing: -0.01em;
@@ -856,6 +859,17 @@ body {
   .nowrap-desktop { white-space: normal; }
   .hero__title { font-size: 2rem; }
   .filosofia__texto { font-size: 1rem; }
+
+  /* El aire extra del hero y el min-height mayor son refinamientos de
+     escritorio: en pantallas cortas (iPhone SE y similares) el contenido
+     chocaba con el indicador de scroll. Aquí se acotan. */
+  .hero { min-height: 620px; }
+  .hero__title { margin-bottom: 28px; }
+  .hero__eyebrow { margin-bottom: 44px; }
+  /* El indicador mide 116px en escritorio; en pantallas de 667px de alto
+     se encimaba con el contenido. Aquí vuelve a una escala proporcional. */
+  .hero__scroll { bottom: 28px; gap: 6px; }
+  .hero__scroll-line { height: 48px; }
 
   /* Carrusel de portafolio: piezas más bajas para que quepan en pantalla */
   .portafolio__item { height: clamp(300px, 46vh, 420px); }

@@ -36,8 +36,10 @@ Producción audiovisual (foto, video, drone) para bienes raíces en México.
 > El teal `#234F60` es oscuro: sobre fondos oscuros se usa `--accent-on-dark` (`#8DB0BC`) o crema para que sea legible.
 
 ## Tipografías
-- **Títulos:** Helvetica Neue (`var(--font-h)`, **weight 400**) — fuente de sistema, no requiere Google Fonts. En Windows cae a Arial.
-- **Cuerpo / UI:** DM Sans (`var(--font-b)`, Google Fonts).
+- **Títulos, botones y precios:** Instrument Sans (`var(--font-h)`, Google Fonts). Pesos 400 y 500.
+- **Cuerpo, nav, labels y footer:** Source Sans 3 (`var(--font-b)`, Google Fonts). Pesos 300, 400 y 500.
+- Escala de pesos: **400** títulos de sección · **500** títulos de tarjeta, UI y `.hero__title` · **300** texto secundario.
+- `.btn` usa `--font-h` (los botones van en la fuente de títulos) y los links del nav móvil usan `--font-b`, para que toda la navegación quede en la fuente de cuerpo. Son las dos excepciones que no se resuelven solo con las variables.
 - Sin uppercase ni cursivas en toda la página (decisión de diseño).
 - **Títulos de un solo color.** `.section-title em` y `.hero__title em` usan `color: inherit`.
 - **`.section-title` va en teal** (`var(--accent)`), de la sección 2 en adelante. El `.hero__title` es la excepción: mantiene `#F8F8F8` porque el teal oscuro sería ilegible sobre el video de fondo. No agregues overrides de color por sección — se quitaron a propósito de `.portafolio`, `.proceso` y `.contacto__title`.
@@ -58,9 +60,11 @@ Los títulos largos llevan la clase **`.nowrap-desktop`** (`white-space: nowrap`
 > | `.contacto__title` | `.contacto__inner` | 1180px |
 > | `.section-title` (resto) | `.container` | 1180px |
 >
-> Verificación: comparar `Range.getBoundingClientRect().width` del texto contra el **`clientWidth` del elemento mismo** (no del padre — `clientWidth` incluye el padding y engaña). Barrer 780, 860, 1024 y 1440px.
+> Verificación general: comparar `Range.getBoundingClientRect().width` del texto contra el **`clientWidth` del elemento mismo** (no del padre — `clientWidth` incluye el padding y engaña). Barrer 780, 860, 1024 y 1440px.
 >
-> Los máximos actuales (`.hero__title` 2.3rem, `.filosofia__texto` 0.88rem) están topados por esta razón; subirlos vuelve a romper el centrado.
+> **El hero es un caso aparte y engaña el doble.** `.hero__content` es un **flex item con `width: auto`**, así que **se encoge hasta el ancho de su propio contenido**. Medir su `clientWidth` siempre devuelve el ancho del texto: parece que cabe exacto aunque no quepa. El límite real es `max-width` menos el padding = **876px**, y hay que medir el texto en un **clon fuera de flujo** (`position:absolute; white-space:nowrap`) contra ese número fijo.
+>
+> Los máximos actuales (`.hero__title` 2.3rem, `.filosofia__texto` 0.88rem) están topados por esta razón; subirlos vuelve a romper el centrado. El `.hero__title` va en peso 500 con `letter-spacing: -0.03em`: el tracking cerrado es lo que compensa el ancho del peso extra y deja 14px de holgura sobre los 876px.
 
 ## Secciones (orden en index.html)
 1. **Hero** — pantalla completa, **video de fondo** `video/hero-fondo.mp4` al 25% opacidad (con `terraza.jpg` de `poster`). Título en una línea, eyebrow debajo, un solo CTA a WhatsApp.
